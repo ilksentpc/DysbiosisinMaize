@@ -10,7 +10,7 @@ library(vegan)
 
 #### Import data ####
 
-setwd("~/Documents/PhD/chapter01/bacteria/phyllosphere/network")
+setwd("~/Documents/PhD/chapter01/bacteria/phyllosphere")
 
 otu_leafbac <- read.csv("otu_leafbac.csv", row.names = 1)
 tax_lefse <- read.csv("tax_lefseorder.csv", row.names = 1)
