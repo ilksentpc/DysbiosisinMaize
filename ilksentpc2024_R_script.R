@@ -10,7 +10,7 @@ library(vegan)
 
 #### Import data ####
 
-setwd("~/Documents/PhD/chapter01/bacteria/phyllosphere")
+setwd("~/Documents/PhD/chapter01/bacteria/leaf")
 
 otu_leafbac <- read.csv("otu_leafbac.csv", row.names = 1)
 tax_lefse <- read.csv("tax_lefseorder.csv", row.names = 1)
@@ -99,4 +99,35 @@ z1 <- z + theme(
 )
 z1
 dev.off()
+
+#### Cluster dendrogram ###
+library(readr)
+otu_leafbac <- read.csv("otu_leafbac.csv", row.names = 1)
+str(otu_leafbac)
+metadata <- read.csv("metadata_leafbac.csv", row.names = 1)
+
+library(vegan)
+bray_dist <- vegdist(t(otu_leafbac), method = "bray") ##complete#muchbetter
+clustOut <- hclust(bray_dist)
+
+library(ape)
+clustPhy <- as.phylo.hclust(clustOut)
+
+png("braycurtis_cluster.png", width=9, height=8, units="in", res=1200)
+p = plot.phylo(clustPhy, show.tip.label = TRUE, cex = 0.5, label.offset = 0.01)
+tiplabels(tip = which(metadata$Genotype == "B. teosinte"), pch = 16, col = "orange", cex = 0.6, offset = 0.005)
+tiplabels(tip = which(metadata$Genotype == "MX Inbred"), pch = 16, col = "deeppink", cex = 0.6, offset = 0.005)
+tiplabels(tip = which(metadata$Genotype == "Perennial teosinte"), pch = 16, col = "forestgreen", cex = 0.5, offset = 0.005)
+tiplabels(tip = which(metadata$Genotype == "US Landrace"), pch = 16, col = "green", cex = 0.6, offset = 0.005)
+tiplabels(tip = which(metadata$Genotype == "MX Landrace"), pch = 16, col = "purple", cex = 0.6, offset = 0.005)
+tiplabels(tip = which(metadata$Genotype == "US Inbred"), pch = 16, col = "yellow", cex = 0.6, offset = 0.005)
+axisPhylo(side = 1)
+mtext(side = 1, line = 2, adj = 0.5, text = "Cluster Height")
+legend("topleft", legend = c("Perennial teosinte", "B. teosinte", "MX Landrace", "MX Inbred", "US Landrace", "US Inbred" ), pch = 16, bty = "n", cex = 0.8, col = c("forestgreen", "orange", "purple", "deeppink", "green", "yellow", title = "Plant Genotype"))
+dev.off() 
+
+
+
+
+
 
