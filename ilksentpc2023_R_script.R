@@ -60,4 +60,28 @@ t2$plot_heatmap(facet = "Genotype", xtext_keep = FALSE, withmargin = FALSE, stri
 dev.off()
 
 
+#### Weighted Unifrac Distance ###
+
+meco_dataset$cal_betadiv(unifrac = TRUE)
+meco_dataset$beta_diversity$wei_unifrac
+library(magrittr)
+meco_dataset$sample_table$Genotype  %<>% factor(levels = c("Perennial teosinte", "B. teosinte", "MX Landrace", "MX Inbred", "US Landrace", "US Inbred"))
+t1 <- trans_beta$new(dataset = meco_dataset, group = "Genotype", measure = "wei_unifrac")
+t1$cal_ordination(ordination = "PCoA")
+png("wunifrac_leaf_bac2.png", width=13, height=9, units="in", res=600)
+t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"))
+dev.off()
+
+#### Non-Metric Multidimensional Scaling (NMDS) ####
+
+library(magrittr)
+meco_dataset$sample_table$Genotype  %<>% factor(levels = c("Perennial teosinte", "B. teosinte", "MX Landrace", "MX Inbred", "US Landrace", "US Inbred"))
+meco_dataset$cal_betadiv(method = "bray", unifrac = FALSE, binary = FALSE)
+t1 <- trans_beta$new(dataset = meco_dataset, group = "Genotype", measure = "bray")
+
+t1$cal_ordination(ordination = "NMDS", ncomp = 3)
+class(t1$res_ordination)
+png("nmds_leaf.png", width=13, height=9, units="in", res=600)
+t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"), NMDS_stress_pos = c(0.8, -2), NMDS_stress_text_prefix = "Stress: ")
+dev.off()
 
