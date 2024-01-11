@@ -69,7 +69,13 @@ meco_dataset$sample_table$Genotype  %<>% factor(levels = c("Perennial teosinte",
 t1 <- trans_beta$new(dataset = meco_dataset, group = "Genotype", measure = "wei_unifrac")
 t1$cal_ordination(ordination = "PCoA")
 png("wunifrac_leaf_bac2.png", width=13, height=9, units="in", res=600)
-t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"))
+x1 <- t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"))
+x2 <- x1 + ggtitle("PCoA of Weighted UniFrac") + theme(
+  text = element_text(size = 16, color = "black"),  
+  axis.title = element_text(size = 18),  
+  axis.text = element_text(size = 14) 
+)
+x2
 dev.off()
 
 #### Non-Metric Multidimensional Scaling (NMDS) ####
