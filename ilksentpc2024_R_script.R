@@ -20,9 +20,12 @@ metadata <- read.csv("metadata_leafbac.csv", row.names = 1)
 sampledata = sample_data(data.frame(metadata))
 OTU = otu_table(otumat, taxa_are_rows = TRUE)
 TAX = tax_table(taxmat)
-OTU
-physeq = phyloseq(OTU, TAX, sampledata)
+
+OTU_TREE = read_tree("bacterial_leaf.tre")
+physeq = phyloseq(OTU, TAX, sampledata, OTU_TREE)
+physeq = phyloseq(OTU, TAX, sampledata, OTU_TREE)
 physeq
+
 meco_dataset <- phyloseq2meco(physeq)
 meco_dataset
 
@@ -88,6 +91,12 @@ t1 <- trans_beta$new(dataset = meco_dataset, group = "Genotype", measure = "bray
 t1$cal_ordination(ordination = "NMDS", ncomp = 3)
 class(t1$res_ordination)
 png("nmds_leaf.png", width=13, height=9, units="in", res=600)
-t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"), NMDS_stress_pos = c(0.8, -2), NMDS_stress_text_prefix = "Stress: ")
+ z <- t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"), NMDS_stress_pos = c(0.8, -2), NMDS_stress_text_prefix = "Stress: ")
+z1 <- z + theme(
+  text = element_text(size = 16, color = "black"),  
+  axis.title = element_text(size = 18),  
+  axis.text = element_text(size = 14) 
+)
+z1
 dev.off()
 
