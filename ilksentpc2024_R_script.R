@@ -53,13 +53,11 @@ write.csv(VennOTU, "vennOTU.csv", row.names=TRUE)
 
 meco_dataset$sample_table$Genotype  %<>% factor(levels = c("Perennial teosinte", "B. teosinte", "MX Landrace", "MX Inbred", "US Landrace", "US Inbred"))
 
-t1 <- trans_abund$new(dataset = meco_dataset, taxrank = "Phylum", ntaxa = 8, use_percentage = TRUE)
-
-png("plot_barleafbac.png", width=16, height=9, units="in", res=600)
+png("phylum_bar_leafbac.png", width=17, height=9, units="in", res=600)
 t1$plot_bar(others_color = "grey70", facet = "Genotype", xtext_keep = FALSE, legend_text_italic = FALSE, barwidth = NULL, strip_text = 7) + 
-theme(axis.text.y = element_text(colour = "black")) + theme(legend.text = element_text(size = 15)) + 
-theme(strip.text = element_text(color = "black"))
-dev.off()
+theme(axis.text.y = element_text(colour = "black", face = "bold")) + theme(legend.text = element_text(size = 15)) + 
+theme(strip.text = element_text(color = "black", face = "bold"))
+dev.off() 
 
 t2 <- trans_abund$new(dataset = meco_dataset, taxrank = "Genus", ntaxa = 40)
 
