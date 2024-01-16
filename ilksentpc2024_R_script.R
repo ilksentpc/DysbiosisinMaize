@@ -59,6 +59,18 @@ theme(axis.text.y = element_text(colour = "black", face = "bold")) + theme(legen
 theme(strip.text = element_text(color = "black", face = "bold"))
 dev.off() 
 
+library(dplyr)
+
+taxonomy_totals <- t1$data_abund %>%
+  group_by(Taxonomy) %>%
+  summarise(Total_Abundance = sum(Abundance)) %>%
+  ungroup() %>%
+  mutate(Percentage = Total_Abundance / sum(Total_Abundance) * 100)
+View(taxonomy_totals)
+
+df_tax <- taxonomy_totals
+write.csv(df_tax, "df_tax.csv", row.names=TRUE)
+
 t2 <- trans_abund$new(dataset = meco_dataset, taxrank = "Genus", ntaxa = 40)
 
 png("heatmapleafbac.png", width=17, height=9, units="in", res=600)
