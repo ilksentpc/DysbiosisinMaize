@@ -118,6 +118,45 @@ z1 <- z + theme(
 z1
 dev.off()
 
+##Principal Coordinate Analysis##
+
+library(magrittr)
+meco_dataset$sample_table$Genotype  %<>% factor(levels = c("Perennial teosinte", "Balsas teosinte", "Mexican landrace", "US landrace", "Mexican inbred", "US inbred"))
+
+meco_dataset$cal_betadiv(method = "bray", unifrac = FALSE, binary = FALSE)
+
+# create an trans_beta object
+# measure parameter must be one of names(dataset$beta_diversity)
+t1 <- trans_beta$new(dataset = meco_dataset, group = "Genotype", measure = "bray")
+
+# PCoA, PCA, DCA and NMDS are available
+t1$cal_ordination(ordination = "PCoA")
+# t1$res_ordination is the ordination result list
+class(t1$res_ordination)
+# plot the PCoA result with confidence ellipse
+t1$plot_ordination(plot_color = "Genotype", plot_shape = "Genotype", plot_type = c("point", "ellipse"))
+
+# manova for all groups when manova_all = TRUE
+t1$cal_manova(manova_all = TRUE)
+t1$res_manova
+
+# manova for each paired groups
+t1$cal_manova(manova_all = FALSE)
+t1$res_manova
+
+# Load the CSV file
+file_path <- "fivecomparison.csv"  # Update with the correct path to your file
+data <- read.csv(file_path)
+
+data
+# Adjust the p-values using the p.adjust function
+data$p.adjusted <- p.adjust(data$p.value, method = "fdr", n=5)
+
+# Print the updated data frame
+print(data)
+
+
+
 #### Cluster dendrogram ###
 library(readr)
 otu_leafbac <- read.csv("otu_leafbac.csv", row.names = 1)
