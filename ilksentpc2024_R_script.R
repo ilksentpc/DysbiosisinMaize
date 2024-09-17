@@ -193,7 +193,7 @@ meco_dataset
 t1 <-  trans_network$new(dataset = meco_dataset, cor_method = "spearman", use_WGCNA_pearson_spearman = TRUE, filter_thres = 0.0001)
 
 library(igraph)
-t1$cal_network(COR_p_thres = 0.01, COR_cut = 0.7) #set_for_each_genotype
+t1$cal_network(COR_p_thres = 0.01, COR_cut = 0.7, COR_p_adjust = "fdr") #set_for_each_genotype
 t1$cal_module(method = "cluster_fast_greedy")
 
 library(rgexf)
